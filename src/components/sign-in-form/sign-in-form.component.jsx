@@ -3,10 +3,11 @@ import { useState } from 'react';
 import FormInput from '../form-input/form-input.component';
 import Button from '../button/button.component';
 
+//import { UserContext } from '../../contexts/user.context';
+
 import {
-  createAuthUserWithEmailAndPassword,
   signInWithGooglePopup,
-  createUserDocumentFromAuth,
+  //createUserDocumentFromAuth,
   signInAuthUserWithEmailAndPassword,
 } from '../../utils/firebase/firebase.utils';
 
@@ -22,6 +23,8 @@ const SignInForm = () => {
 
   const { email, password } = formFields;
 
+  //const { setCurrentUser } = useContext(UserContext);
+
   //console.log(formFields);
 
   const resetFormFields = () => {
@@ -29,28 +32,24 @@ const SignInForm = () => {
   };
 
   const SignInWithGoogle = async () => {
-    const { user } = await signInWithGooglePopup();
-
-    await createUserDocumentFromAuth(user);
+    await signInWithGooglePopup();
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      const response = await signInAuthUserWithEmailAndPassword(
-        email,
-        password
-      );
-      console.log(response);
-      //Reset form fields
-      resetFormFields();
+      await signInAuthUserWithEmailAndPassword(email, password);
+
+      //setCurrentUser(user);
     } catch (error) {
       if (error.errorCode !== 'auth/wrong-password') {
-        alert('incorrect password for email');
+        alert('incorrect password or email');
       }
       console.log(error);
     }
+    //Reset form fields
+    resetFormFields();
   };
 
   const handleChange = (event) => {
@@ -76,7 +75,7 @@ const SignInForm = () => {
         <FormInput
           label="Password"
           type="password"
-          requiredds
+          required
           onChange={handleChange}
           name="password"
           value={password}

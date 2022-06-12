@@ -8,6 +8,8 @@ import {
   createUserDocumentFromAuth,
 } from '../../utils/firebase/firebase.utils';
 
+//import { UserContext } from '../../contexts/user.context';
+
 import './sign-up-form.styles.scss';
 
 const defaultFormFields = {
@@ -21,6 +23,8 @@ const SignUpForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
 
   const { displayName, email, password, confirmPassword } = formFields;
+
+  //const { setCurrentUser } = useContext(UserContext);
 
   //console.log(formFields);
 
@@ -42,7 +46,8 @@ const SignUpForm = () => {
         email,
         password
       );
-      //console.log(user);
+
+      //setCurrentUser(user);
 
       //Append display name to be used in the database
       //user.displayName = formFields.displayName;
